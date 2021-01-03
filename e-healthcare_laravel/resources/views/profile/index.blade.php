@@ -3,6 +3,7 @@
 <title>E-Health Care</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -35,10 +36,19 @@
     <div class="w3-third">
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
-          <img src="{{asset('asset/upload/nayeem.jpg')}}" style="width:100%; height: 30%;" alt="Avatar">
-                  <button class="btn btn-info" style="margin-left: 380px;
-                  margin-top: 10px;"><a href="/user/edit_info/<%= p_info.id%>">Edit</a></button>
-
+          @if($patient->photo=='')
+          <button class="btn btn-info" style="margin-left: 190px;
+                  margin-top: 10px;"><a href="{{route('profile.image' , $patient->user_id)}}">Upload Image</a></button>
+                  <button class="btn btn-info" style="margin-left: 10px;
+                  margin-top: 10px;"><a href="{{route('profile.edit' , $patient->user_id)}}">Add Info</a></button>
+          @else
+          
+          <img src="{{asset('asset/upload/'.$patient->photo)}}" style="width:100%; height: 30%;" alt="Avatar">
+                  <button class="btn btn-info" style="margin-left: 190px;
+                  margin-top: 10px;"><a href="{{route('profile.image' , $patient->user_id)}}">Change Image</a></button>
+                  <button class="btn btn-info" style="margin-left: 10px;
+                  margin-top: 10px;"><a href="{{route('profile.edit' , $patient->user_id)}}">Edit Info</a></button>
+        @endif
         </div>
         <div class="w3-container" style="margin-top: 30px;">
           
@@ -57,9 +67,9 @@
     </div>
 
     <!-- Right Column -->
-    <div class="w3-twothird">
+    <div class="w3-twothird" style="margin-bottom: 50px;">
     
-      <div class="w3-container w3-card w3-white w3-margin-bottom">
+      <div class="w3-container w3-card w3-white w3-margin-bottom" style="padding-bottom: 200px;margin-right: -40px;">
        <div class="nn">
        	 <h2 class="w3-text-grey w3-padding-16"><i class="fas fa-heartbeat fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Health Status</h2>
        </div>
@@ -69,6 +79,7 @@
         </div>
         
         <div class="w3-container">
+          <input type="hidden" id="val" value="{{$patient->bmi}}">
           <h5 class="w3-opacity"><b>BMI : {{$patient->bmi}}</b></h5>
           <hr>
         </div>
@@ -83,26 +94,30 @@
         <div class="w3-container">
           <h5 class="w3-opacity"><b>Calorie intake : {{$patient->cal}} calories</b></h5>          
         </div>
+
+        <div id="columnchart_values" style="width: 900px; height: 200px;"></div>
       </div>
 
-      <div class="w3-container w3-card w3-white">
+      <div class="w3-container w3-card w3-white" style="margin-right: -40px;">
         <div class="nn">
             <h2 class="w3-text-grey w3-padding-16"><i class="fas fa-procedures fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Test Report</h2> 
             
             <div class="but2">
-                <button class="btn btn-info"><a href="/user/add_test_report/<%= test_report[0].user_id%>">Add</a></button>
+                <button class="btn btn-info"><a href="{{route('profile.test_report' , $patient->user_id)}}">Add</a></button>
 
             </div> 
         </div>
-        <% test_report.forEach( function(std){ %>
+        @foreach($t_r as $x => $val)
         <div class="w3-container">
-          <h5 class="w3-opacity"><b>Name : <%= std.name%></b></h5>          
+          <h5 class="w3-opacity"><b>Name : {{$x = $val->name}}</b></h5>          
         </div>
         <div class="w3-container" style="margin-bottom: 30px;">
-          <img src="/abc/upload/<%= std.tr_photo%>" style="width: 200px;height: 200px;">     
+          <img src="{{asset('asset/upload/'.$x = $val->photo)}}" style="width: 200px;height: 200px;">  
+          <hr>   
         </div>
-            <%})%>         
+        @endforeach 
       </div>
+             
 
     <!-- End Right Column -->
     </div>
@@ -214,7 +229,7 @@
           <td>10</td>
         </tr>
         <tr>
-          <td><a href="#" onclick="HTMLtoPDF_prescription()"  style = "color: blue !important;font-size: 14px;">Download PDF</a></td>
+          <td><a href="#" onclick="HTMLtoPDF_prescription()"  style = "color: #3fff00 !important;font-size: 14px;">Download PDF</a></td>
         </tr>
       </tbody>
     </table>
@@ -314,6 +329,7 @@
 <script src="{{asset('asset/js/profile.js')}}"></script>
 <script src="{{asset('asset/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('asset/js/jquery-3.5.1.min.js')}}"></script>
+<script src="{{asset('asset/js/loader.js')}}"></script>
 <script>
   function goBack() {
     window.history.back();
@@ -323,5 +339,6 @@
 <script src="{{asset('asset/js/jspdf.js')}}"></script>
 <script src="{{asset('asset/js/jquery-2.1.3.js')}}"></script>
 <script src="{{asset('asset/js/pdfFromHTML.js')}}"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </body>
 </html>

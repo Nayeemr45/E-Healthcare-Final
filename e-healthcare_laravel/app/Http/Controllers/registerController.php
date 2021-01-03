@@ -45,8 +45,8 @@ class registerController extends Controller
         	echo "File Size: ".$file->getSize();*/
 
         	if($file->move('upload', $file->getClientOriginalName())){
-        		
-                $user = new User();
+        		$user = new User();
+                
                 $user->name         = $req->name;
                 $user->username     = $req->username;
                 $user->password     = Hash::make($req->password);

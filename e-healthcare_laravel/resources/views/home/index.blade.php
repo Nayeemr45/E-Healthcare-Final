@@ -111,7 +111,7 @@
                 </li>
                
                 <li>
-                      <a href="/home/doctors">Doctors</a>
+                      <a href="{{route('doctors.index')}}">Doctors</a>
                 </li>
                 <li>
                       <a href="/home/consult">Consult</a>
@@ -154,7 +154,7 @@
 ==================================-->
 <div class="hero-slider">
     <!-- Slider Item -->
-    <div class="slider-item slide1" style="background-image:url({{ asset('asset/img/slider/slider-bg-1.jpg')}})">
+    <div class="slider-item slide1" style="background-image:url({{asset('asset/img/slider/slider-bg-1.jpg')}})">
         <div class="container">
             <div class="row">
                 <div class="col-12">

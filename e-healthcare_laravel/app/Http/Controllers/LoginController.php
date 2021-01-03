@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+use Laravel\Socialite\Facades\Socialite;
 
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\Patient;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Validator;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -68,4 +72,84 @@ class LoginController extends Controller
                         echo $count; */
     	
     }
+
+
+    public function redirectToFacebook(){
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleFacebookCallback(Request $req)
+    {
+        $data = Socialite::driver('facebook')->stateless()->user();
+        
+        //dd($user);
+        //$this->_registerOrLoginUser($user );
+
+        // Return home after login
+       //return redirect()->route('home.index');
+       $check = User::where('email', $data->email)->first();
+       if (!$check) {
+           $user = new User();
+           $user->name = $data->name;
+           $user->username = '';
+           $user->password = '';
+           $user->photo = '';
+           $user->contactno = '';
+           $user->email = $data->email;
+           $user->type = 'patient';
+           $user->remember_token = $data->id;
+           $user->save();
+           $patient = new Patient();
+           $patient->dob = '';
+           $patient->address = '';
+           $patient->bloodgroup = '';
+           $patient->bmi = '';
+           $patient->weight = '';
+           $patient->bloodpressure = '';
+           $patient->cal = '';
+           $patient->user_id = $user->id;;
+           $patient->save();
+
+           
+            $req->session()->put('username', $user->name);
+                                //$req->session()->put('type', $req->username);
+            $req->session()->put('id', $user->id);
+                                
+            return redirect()->route('home.index');
+           //Auth::login($user);
+           //return redirect()->route('home.index')->with('id' , $check->id)->with('name' , $check->name);
+       }else{
+        //Auth::login($check);
+        
+        $req->session()->put('username', $check->name);
+        //$req->session()->put('type', $req->username);
+        $req->session()->put('id', $check->id);
+        
+        return redirect()->route('home.index');
+        //return redirect()->route('home.index')->with('id' , $check->id)->with('name' , $check->name);
+       }
+
+
+
+    }
+    /* protected function _registerOrLoginUser($data)
+    {
+        $user = User::where('email', $data->email)->first();
+        if (!$user) {
+            $user = new User();
+            $user->name = $data->name;
+            $user->username = '';
+            $user->password = '';
+            $user->photo = '';
+            $user->contactno = '';
+            $user->email = $data->email;
+            $user->type = 'patient';
+            $user->remember_token = $data->id;
+            $user->save();
+           
+        }
+        
+        Auth::login($user);
+    } */
+
 }

@@ -44,29 +44,26 @@ module.exports= {
 			callback(results);
 		});
 	},
-	insert: function(patient, callback){
-		var sql = "INSERT INTO users(fullname,username,email,password,type,photo,contactno) VALUES ('"+patient.fullname+"','"+patient.username+"','"+patient.email+"','"+patient.password+"','"+patient.type+"','"+patient.photo+"','"+patient.contactno+"')";
+	insert: function(report, callback){
+		var sql = "INSERT INTO test_reports(name,photo,user_id,date) VALUES ('"+report.name+"','"+report.photo+"','"+report.id+"','"+report.date+"')";
 		
 		db.getResults(sql,function(results){
-			console.log("abc :",results.insertId);
-			var sql2 = "INSERT INTO patient_info(p_birth_date,p_address,p_blood_group,p_bmi,p_weight,p_blood_p,p_cal_in,user_id) VALUES ('"+patient.dob+"','"+patient.address+"','"+patient.bg+"','"+patient.bmi+"','"+patient.weight+"','"+patient.bp+"','"+patient.cal+"','"+results.insertId+"')";
-			db.getResults(sql2,function(results){
 			callback(results);
-			//abc = status.insertId;
-			//console.log("abc :",abc);
 			});
-		});
 	},
 	
 	update: function(user, callback){
 		console.log(user);
-		var sql = "update users set username = '"+user.username+"',email = '"+user.email+"', password = '"+user.password+"',companyname = '"+user.companyname+"',contactno = '"+user.contactno+"' where id = '"+user.id+"'";
+		var sql = "update users set contactno = '"+user.contactno+"' where id = '"+user.id+"'";
 		db.execute(sql, function(status){
-			if(status){
+		var sql2 = "update patients set address = '"+user.address+"',bmi = '"+user.bmi+"',weight = '"+user.weight+"',bloodpressure = '"+user.bloodpressure+"',cal = '"+user.cal+"' where user_id = '"+user.id+"'";
+		db.execute(sql2, function(status1){
+			if(status1){
 				callback(true);
 			}else{
 				callback(false);
 			}
+		});
 		});
 	},
 	delete: function(patient, callback){
