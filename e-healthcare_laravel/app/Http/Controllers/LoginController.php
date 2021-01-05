@@ -54,7 +54,7 @@ class LoginController extends Controller
                             if(Hash::check($req->password, $hashedPassword)){
                                 
                                 $req->session()->put('username', $req->username);
-                                //$req->session()->put('type', $req->username);
+                                $req->session()->put('type', $user->type);
                                 $req->session()->put('id', $user->id);
                                 
                                 return redirect()->route('home.index');
@@ -107,12 +107,12 @@ class LoginController extends Controller
            $patient->weight = '';
            $patient->bloodpressure = '';
            $patient->cal = '';
-           $patient->user_id = $user->id;;
+           $patient->user_id = $user->id;
            $patient->save();
 
            
             $req->session()->put('username', $user->name);
-                                //$req->session()->put('type', $req->username);
+            $req->session()->put('type', $user->type);
             $req->session()->put('id', $user->id);
                                 
             return redirect()->route('home.index');
@@ -122,7 +122,7 @@ class LoginController extends Controller
         //Auth::login($check);
         
         $req->session()->put('username', $check->name);
-        //$req->session()->put('type', $req->username);
+        $req->session()->put('type', $check->type);
         $req->session()->put('id', $check->id);
         
         return redirect()->route('home.index');

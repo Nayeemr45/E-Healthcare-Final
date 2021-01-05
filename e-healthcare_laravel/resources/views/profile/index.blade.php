@@ -171,23 +171,35 @@
           <th>Department Name</th>
           <th>Date</th>
           <th>Time</th>
-          <th>Payment Status</th>
+          <th>Status</th>
+         
           <th>Pay Now</th>
         </tr>
       </thead>
       <tbody>
-        <% consult_info.forEach( function(std){ %>
-
+      
+      @foreach($data as $x => $val)
         <tr>
-          <td><%= std.department %></td>
-          <td><%= std.date %></td>
-          <td><%= std.time %></td>
-          <td><%= std.payment_status %></td>
-        
-       
-          <td><a href="/user/payment/<%= std.p_id %>/<%= std.d_id %>" style="color: blue !important;font-size: 14px;">Pay</a></td>
+        @if($val['user_id'] == $patient->user_id)
+
+          <td>{{$val['department']}}</td>
+          <td>{{$val['date']}}</td>
+          <td>{{$val['time']}}</td>
+          <td>{{$val['status']}}</td>
+
+
+          @foreach($payment as $val2)
+          @if ($val['status']=='approved')
+            @if ($val2['list_id'] != $val['id'])
+            <td><a href="/payment/{{$patient->user_id}}/{{$val['id']}}" style="color: red !important;font-size: 14px;"><strong>Pay</strong></a></td>
+            @endif
+          @else
+          <td><a href="#" style="color: orange !important;font-size: 14px;"><strong>Waiting</strong></a></td>
+          @endif
+          @endforeach
+          @endif
         </tr>
-        <%})%>
+        @endforeach
       </tbody>
     </table>
   </div>
@@ -243,21 +255,21 @@
     <table class="table table-borderless">
       <thead>
         <tr>
-          <th>Paid Amount</th>
+          <th>ID</th>
           <th>Payment Gateway</th>
           <th>Date</th>
           <th>Payment Status</th>
         </tr>
       </thead>
       <tbody>
-        <% payment_info.forEach( function(std){ %>
+      @foreach($payment as $val)
 
         <tr>
-          <td><%= std.amount %></td>
-          <td><%= std.gateway %></td>
-          <td><%= std.payment_date %></td>
-          <td><span class="badge badge-success"><%= std.payment_status %></span></td>
-          <%})%>
+          <td>{{$val['list_id']}}</td>
+          <td>{{$val['gateway']}}</td>
+          <td>{{$val['date']}}</td>
+          <td><span class="badge badge-success">{{$val['status']}}</span></td>
+          @endforeach
         </tr>
         
       </tbody>

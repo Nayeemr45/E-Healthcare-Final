@@ -4,9 +4,10 @@
 
 .doctors{
     display: flex;
-    margin-left: 80px;
+    margin-left: 630px;
     margin-top: 50px;
     margin-bottom: 50px;
+    text-align: left;
 }
 .card{
     margin-right: 100px;

@@ -124,7 +124,7 @@
                
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary my-4" name="submit">Log in</button><br>
-                  <a href="/forgotpassword">Forgot password?</a>
+                 
                 </div>
               </form>
             </div>

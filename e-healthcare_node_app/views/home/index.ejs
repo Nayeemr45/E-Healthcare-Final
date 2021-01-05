@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Requests</title>
+
+  <link rel="stylesheet" type="text/css" href="abc/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="abc/css/style.css">
+</head>
+
+<body>
+<div class="container">
+  <div class="main">
+    <form method="POST">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Select a Request</label>
+          <select class="form-control" name="approve">
+            <% data.forEach( function(std,i){ %>
+              <%if(std.status == 'pending' && std.vote_id != id){ %>
+            <option value="<%=std.id%>">ID: <%=std.id%> <===> Date: <%=std.date%> <===> Time: <%=std.time%> <===> Vote: <%=std.vote%></option>
+            <% }else{ %>
+              <option value="">Choose a Request</option>
+            <% } %>
+
+            <% }); %>
+          </select>
+        </div>
+      
+      <button type="submit" name="submit" class="btn btn-primary">Approve</button>
+
+    </form>
+    <button class="btn btn-primary btn2"><a href="/logout">Logout</a></button>
+
+  </div>
+</div>
+  
+ 
+ 
+  
+</body>
+
+</html>

@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <!-- Slick Carousel -->
+  <link rel="stylesheet" href="{{ asset('asset//plugins/font-awesome-4.7.0/css/font-awesome.min.css')}}">
   <link rel="stylesheet" href="{{ asset('asset/plugins/slick/slick.css')}}">
   <link rel="stylesheet" href="{{ asset('asset/plugins/slick/slick-theme.css')}}">
   <!-- FancyBox -->
@@ -114,13 +115,13 @@
                       <a href="{{route('doctors.index')}}">Doctors</a>
                 </li>
                 <li>
-                      <a href="/home/consult">Consult</a>
+                      <a href="{{route('consult.index')}}">Consult</a>
                 </li>
                 <li>
-                      <a href="/home/appointment">Appointment</a>
+                      <a href="/appointment">Appointment</a>
                 </li>
                 <li>
-                      <a href="/home/blog">Blog</a>
+                      <a href="/blog">Blog</a>
                 </li>
                 <li>
                       <a href="/pharmacy">Pharmacy</a>
@@ -1049,8 +1050,7 @@
 <!-- FancyBox -->
 <script src="{{ asset('asset/plugins/fancybox/jquery.fancybox.min.js')}}"></script>
 <!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
-<script src="{{ asset('asset/plugins/google-map/gmap.js')}}"></script>
+
 
 <script src="{{ asset('asset/plugins/validate.js')}}"></script>
 <script src="{{ asset('asset/plugins/wow.js')}}"></script>

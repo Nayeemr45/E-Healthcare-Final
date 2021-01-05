@@ -84,7 +84,7 @@ p {
 }
 
 img {
-	max-width: 100%;
+	max-width: 130%;
 }
 
 input:focus,
@@ -1169,7 +1169,7 @@ ol {
 }
 
 .product__item__pic {
-	height: 360px;
+	height: 265px;
 	position: relative;
 	overflow: hidden;
 }
@@ -1310,8 +1310,6 @@ ol {
 
 .product__item__text .product__price span {
 	font-size: 14px;
-	color: #b1b0b0;
-	text-decoration: line-through;
 	margin-left: 4px;
 }
 

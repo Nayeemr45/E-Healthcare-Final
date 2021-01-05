@@ -11,12 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <!-- Slick Carousel -->
-  <link rel="stylesheet" href="{{asset('asset/css/bootstrap.min.css')}}">
-
-  <link rel="stylesheet" href="{{asset('asset/plugins/slick/slick.css')}}">
-  <link rel="stylesheet" href="{{asset('asset/plugins/slick/slick-theme.css')}}">
+<script src="{{asset('asset/js/jquery-3.5.1.min.js')}}"></script>
   <!-- FancyBox -->
-  <link rel="stylesheet" href="{{asset('asset/plugins/fancybox/jquery.fancybox.min.css')}}">
   
   <!-- Stylesheets -->
   <link href="{{asset('asset/css/style.css')}}" rel="stylesheet">
@@ -42,7 +38,7 @@
       <div class="container clearfix">
             <div class="logo">
                   <figure>
-                        <a href="index.html">
+                        <a href="/home">
                               <img src="{{asset('asset/img/logo.png')}}" alt="" width="130">
                         </a>
                   </figure>
@@ -50,7 +46,7 @@
 
             <form>
               <div class="col-xl-3 col-lg-7 search">
-                <input class="form-control" type="text" placeholder="Search Doctor" id="search" type="text">
+                <input class="form-control" name="search" type="text" placeholder="Search Doctor" id="search" type="text">
                 <div class="link-btn">
                     <button id="ajaxSearch" type="submit" class="btn-style-one">Search</button>
                 </div>
@@ -83,16 +79,16 @@
             </li>
            
             <li>
-                  <a href="/home/doctors">Doctors</a>
+                  <a href="/doctors">Doctors</a>
             </li>
             <li>
-                  <a href="/home/consult">Consult</a>
+                  <a href="/consult">Consult</a>
             </li>
             <li>
-                  <a href="/home/appointment">Appointment</a>
+                  <a href="/appointment">Appointment</a>
             </li>
             <li>
-                  <a href="/home/blog">Blog</a>
+                  <a href="/blog">Blog</a>
             </li>
             <li>
                   <a href="/pharmacy">Pharmacy</a>
@@ -124,21 +120,16 @@
 
   <div class="d2" style="display: none; margin-top: 50px; margin-left: 50px; margin-bottom: 50px;">
     <div class="card" >
-        <div class="img">
+        <div id="image">
 
-            <img class="card-img" src="{{asset('asset/img/doctor2.jpg')}}" alt="Card image cap">
         </div>
         <div class="card-body">
-          <h5 class="card-title"><span id="doctor_name"></span></h5>
-          <p class="card-text">  <span id="doctor_qualification"></span></p>
-          <p class="card-text">  <span id="doctor_dep"></span></p>
-          <p class="card-text">Fee :  <span id="doctor_fee"></span></p>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-            View More
-          </button>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-            Appointment Schedule
-          </button>
+          <p class="card-title"><strong>Name</strong> : <span id="doctor_name"></span></p>
+          <p class="card-text"><strong>Qualification</strong> : <span id="doctor_qualification"></span></p>
+          <p class="card-text"><strong>Email</strong> : <span id="doctor_email"></span></p>
+          <p class="card-text"><strong>Fee</strong> : <span id="doctor_fee"></span></p>
+          <p class="card-text"><strong>About</strong> : <span id="doctor_about"></span></p>
+          
         </div>
        
 
@@ -148,7 +139,7 @@
 
 
 
-
+<div class="ss"></div>
 
 
 
@@ -320,23 +311,6 @@
   <span class="icon fa fa-angle-up"></span>
 </div>
 
-<script src="{{asset('asset/plugins/jquery.js')}}"></script>
-<script src="{{asset('asset/plugins/bootstrap.min.js')}}"></script>
-<script src="{{asset('asset/plugins/bootstrap-select.min.js')}}"></script>
-<!-- Slick Slider -->
-<script src="/abc/plugins/slick/slick.min.js')}}"></script>
-<!-- FancyBox -->
-<script src="{{asset('asset/plugins/fancybox/jquery.fancybox.min.js')}}"></script>
-<!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
-<script src="{{asset('asset/plugins/google-map/gmap.js')}}"></script>
-
-<script src="{{asset('asset/plugins/validate.js')}}"></script>
-<script src="{{asset('asset/plugins/wow.js')}}"></script>
-<script src="{{asset('asset/plugins/jquery-ui.js')}}"></script>
-<script src="{{asset('asset/plugins/timePicker.js')}}"></script>
-<script src="{{asset('asset/js/script.js')}}"></script>
-
 
 <script>
     function goBack() {
@@ -351,25 +325,38 @@
         $("#ajaxSearch").click((e) => {
             e.preventDefault();
             var search = $("#search").val();
-            $(this).closest('myTable').remove();
-            $.ajax({
-                url: "/user/search_doctor",
+            console.log("🚀 ~ file: index.blade.php ~ line 337 ~ $ ~ search", search)
+              //$(this).closest('myTable').remove();
+              $.ajax({
+                url: "{{route('search.index')}}",
                 data: { search: search },
-                method: "POST",
-                contentType: "application/x-www-form-urlencoded",
+                dataType: 'json',
                 success: function(data){
-                    var results = data.results;
-                    console.log("$ -> results", results.length)
+                    console.log("$ -> results", data) 
+                    /* var _html='';
+                    $.each(res.data,function(index,data){
+
+                    }); */
+                    
                     document.querySelector('.doctors').style.display = "none";
                     document.querySelector('.d2').style.display = "flex";
-                    $("#doctor_name").html(results[0].fullname);
-                    $("#doctor_qualification").html(results[0].d_qualification);
-                    $("#doctor_dep").html(results[0].d_department);
-                    $("#doctor_fee").html(results[0].d_fee);
+                    
+
+                    $.each(data, function(i, val) {
+                     
+                    $("#doctor_name").html(data[i].name);
+                    $("#doctor_qualification").html(data[i].qualification);
+                    $("#doctor_email").html(data[i].email);
+                    $("#doctor_fee").html(data[i].fee);
+                    $("#doctor_about").html(data[i].about);
+                    $('#image').html('<img src="asset/img/'+data[i].photo+'" style="width:200px;height:217px"/>');
+
+                  });
                 }, error: function(err) {
                     alert(err);
                 }
             });
+           
             
             
         });

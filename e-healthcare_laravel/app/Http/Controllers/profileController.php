@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Patient;
+use App\Models\Payment;
 use App\Models\Test_report;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use Validator;
+use File;
 
 class profileController extends Controller
 {
@@ -23,10 +25,23 @@ class profileController extends Controller
         //print_r($v->id);
         $test_report = Test_report::where('user_id', $id)
         ->get();
-        //$patient = Patient::where('user_id', $id)->first();
-        //return view('profile.index')->with('user', $user)->with('patient', $patient);
-
-        return view('profile.index')->with('patient', $patient)->with('t_r', $test_report);
+        
+        $file = 'pending_transaction.json';
+        //$destinationPath=public_path()."/upload/json/";
+        $destinationPath="../../json/";
+    
+        
+        $current_data = FILE::get($destinationPath.$file,true);
+        $array_data = json_decode($current_data, true);
+        
+        $payment = Payment::where('user_id', $id)
+                    ->get();
+        
+       return view('profile.index')
+       ->with('patient', $patient)
+       ->with('t_r', $test_report)
+       ->with('data', $array_data)
+       ->with('payment', $payment);
     }
     public function edit($id){
         $resp = Http::get('http://127.0.0.1:3000/data/'.$id);
@@ -132,6 +147,26 @@ class profileController extends Controller
         else{
             return back();
         }
+
+    }
+
+    public function show_payment($user_id ,$id){
+        return view('payment.index')->with('user_id' , $user_id)->with('id' , $id);
+    }
+
+    public function add_payment(Request $req , $id){
+       
+        $payment = new Payment();
+                
+        $payment->gateway = $req->gateway;
+        $payment->date = $req->date;
+        $payment->status = $req->status;
+        $payment->user_id = $req->user_id;
+        $payment->list_id = $req->list_id;
+
+        $payment->save();
+
+        return redirect()->route('home.index'); 
 
     }
 

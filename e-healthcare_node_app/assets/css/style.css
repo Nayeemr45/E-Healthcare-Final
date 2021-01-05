@@ -1,0 +1,22 @@
+.main{
+    margin-top: 100px;
+    width: 480px;
+    margin-left: 300px;
+}
+
+span{
+    color:red;
+}
+
+a{
+    color:white;
+    text-decoration: none;
+}
+a:hover{
+    color:white;
+    text-decoration: none;
+}
+
+.btn2{
+    margin-left: 410px;
+}
